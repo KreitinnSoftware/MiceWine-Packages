@@ -1,4 +1,5 @@
 PKG_VER=3.4.0
+PKG_CATEGORY="Core"
 SRC_URL=https://downloads.sourceforge.net/freeglut/freeglut-$PKG_VER.tar.gz
 CMAKE_ARGS="-DANDROID=OFF -DCMAKE_LIBRARY_PATH=$PREFIX_DIR/lib"
 CFLAGS="-I$PREFIX_DIR/include"

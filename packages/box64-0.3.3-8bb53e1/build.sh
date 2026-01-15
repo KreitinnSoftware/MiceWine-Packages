@@ -1,7 +1,6 @@
 PKG_VER=0.3.3-[gss]
 PKG_CATEGORY="Box64"
 PKG_PRETTY_NAME="Box64"
-PKG_DOWNLOADABLE=1
 
 GIT_URL=https://github.com/ptitSeb/box64
 GIT_COMMIT=8bb53e10018e7ebee785afc8ad571f1cee5f9bef

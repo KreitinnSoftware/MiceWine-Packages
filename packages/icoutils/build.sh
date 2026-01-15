@@ -1,4 +1,5 @@
 PKG_VER=1
+PKG_CATEGORY="Core"
 GIT_URL=https://github.com/KreitinnSoftware/icoutils
 CONFIGURE_ARGS="--host=$TOOLCHAIN_TRIPLE host_alias=$TOOLCHAIN_TRIPLE"
 CFLAGS="-I$PREFIX/include"

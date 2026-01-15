@@ -118,7 +118,7 @@ setupPackage()
 {
     local package=$1
 
-    unset PKG_VER PKG_CATEGORY PKG_PRETTY_NAME PKG_DOWNLOADABLE
+    unset PKG_VER PKG_CATEGORY PKG_PRETTY_NAME
 	unset SRC_URL GIT_URL GIT_COMMIT
 	unset HOST_BUILD_FOLDER HOST_BUILD_MAKE HOST_BUILD_CONFIGURE_ARGS HOST_BUILD_CFLAGS HOST_BUILD_CXXFLAGS HOST_BUILD_LDFLAGS
 	unset CONFIGURE_ARGS MESON_ARGS CMAKE_ARGS
@@ -283,7 +283,6 @@ setupPackage()
 	echo "$PKG_PRETTY_NAME" >> pkg-pretty-name
 	echo "$PKG_VER" >> pkg-ver
 	echo "$PKG_CATEGORY" >> pkg-category
-	echo "$PKG_DOWNLOADABLE" >> pkg-downloadable
 
 	if [ "$PKG_CATEGORY" == "VulkanDriver" ] || [ "$PKG_CATEGORY" == "AdrenoTools" ]; then
 		echo "$VK_DRIVER_LIB" >> vk-driver-lib
@@ -450,7 +449,6 @@ compileAll()
 		pkgVersion=$(cat "../pkg-ver")
 		pkgCategory=$(cat "../pkg-category")
 		pkgCommit=$(cat "../pkg-commit")
-		pkgDownloadable=$(cat "../pkg-downloadable")
 		pkgPrettyName=$(cat "../pkg-pretty-name")
 		vkDriverLib=""
 
@@ -483,10 +481,6 @@ compileAll()
 		find "$packageDestDirPkg" -type f > "$INIT_DIR/logs/$package-package-files.txt"
 
 		echo $pkgCommit > "$INIT_DIR/built-pkgs/$package-$pkgVersion-$ARCH.commit"
-
-		if [ -n "$pkgDownloadable" ]; then
-			touch "$INIT_DIR/built-pkgs/$package-$pkgVersion-$ARCH.isDownloadable"
-		fi
 
 		if [ ! -n "$pkgPrettyName" ]; then
 			pkgPrettyName=$package

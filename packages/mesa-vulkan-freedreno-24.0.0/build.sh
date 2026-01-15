@@ -1,7 +1,6 @@
 PKG_VER=24.0.0
 PKG_CATEGORY="VulkanDriver"
 PKG_PRETTY_NAME="Mesa Turnip Driver"
-PKG_DOWNLOADABLE=1
 VK_DRIVER_LIB="libvulkan_freedreno.so"
 
 BLACKLIST_ARCH=x86_64

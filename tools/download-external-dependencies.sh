@@ -177,27 +177,11 @@ cd "wine-utils"
 
 mkdir -p "DXVK" "WineD3D" "VKD3D"
 
-export DXVK_GPLASYNC_LIST=""
-export DXVK_ASYNC_LIST=""
-export DXVK_LIST=""
-export WINED3D_LIST=""
-export VKD3D_LIST=""
-
-case "$1" in "--optional")
-	DXVK_GPLASYNC_LIST="2.4-1 2.3.1-1 2.3-1 2.2-4 2.1-4"
-	DXVK_ASYNC_LIST="2.0 1.10.3 1.10.2 1.10.1 1.10 1.9.4 1.9.3 1.9.2 1.9.1 1.9"
-	DXVK_LIST="2.5.3 2.5.2 2.5.1 2.5 2.4.1 2.4 2.3.1 2.3 2.2 2.1 2.0 1.10.3 1.10.2 1.10.1 1.10 1.9.4 1.9.3 1.9.2 1.9.1 1.9 1.7.2 1.7.1 1.7 1.7.3"
-	WINED3D_LIST="10.0 10.0-rc3 9.20 9.16 9.3 9.1 9.0 8.15 7.11 3.17"
-	VKD3D_LIST="2.14.1 2.14 2.13 2.12 2.11.1 2.11 2.10 2.9 2.8"
-	;;
-	*)
-	DXVK_GPLASYNC_LIST="2.4-1"
-	DXVK_ASYNC_LIST="1.10.3"
-	DXVK_LIST="2.4.1 1.10.3"
-	WINED3D_LIST="3.17 10.0"
-	VKD3D_LIST="2.8"
-esac
-
+export DXVK_GPLASYNC_LIST="2.4-1 2.3.1-1 2.3-1 2.2-4 2.1-4"
+export DXVK_ASYNC_LIST="2.0 1.10.3 1.10.2 1.10.1 1.10 1.9.4 1.9.3 1.9.2 1.9.1 1.9"
+export DXVK_LIST="2.5.3 2.5.2 2.5.1 2.5 2.4.1 2.4 2.3.1 2.3 2.2 2.1 2.0 1.10.3 1.10.2 1.10.1 1.10 1.9.4 1.9.3 1.9.2 1.9.1 1.9 1.7.2 1.7.1 1.7 1.7.3"
+export WINED3D_LIST="10.0 10.0-rc3 9.20 9.16 9.3 9.1 9.0 8.15 7.11 3.17"
+export VKD3D_LIST="2.14.1 2.14 2.13 2.12 2.11.1 2.11 2.10 2.9 2.8"
 
 for i in $DXVK_GPLASYNC_LIST; do
 	dxvkGplAsyncDownload "$i"
@@ -219,9 +203,7 @@ for i in $VKD3D_LIST; do
 	vkd3dDownload "$i"
 done
 
-case "$1" in "--optional")
-	customDxvkDownload "DXVK-1.10.6-Sarek" "https://github.com/pythonlover02/DXVK-Sarek/releases/download/v1.10.6/dxvk-sarek-v1.10.6.tar.gz"
-	customDxvkDownload "DXVK-1.10.6-Sarek-ASync" "https://github.com/pythonlover02/DXVK-Sarek/releases/download/v1.10.6/dxvk-sarek-async-v1.10.6.tar.gz"
-esac
+customDxvkDownload "DXVK-1.10.6-Sarek" "https://github.com/pythonlover02/DXVK-Sarek/releases/download/v1.10.6/dxvk-sarek-v1.10.6.tar.gz"
+customDxvkDownload "DXVK-1.10.6-Sarek-ASync" "https://github.com/pythonlover02/DXVK-Sarek/releases/download/v1.10.6/dxvk-sarek-async-v1.10.6.tar.gz"
 
 cp -rf "$INIT_DIR/common/"* .

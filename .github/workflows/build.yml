@@ -33,12 +33,12 @@ jobs:
 
     - name: "Copy Repository to Chroot"
       run: |
-        sudo cp -rf $PWD /mnt/arch/MiceWine-RootFS-Generator
+        sudo cp -rf $PWD /mnt/arch/MiceWine-Packages
 
     - name: "Download Latest Release Rat Packages"
       run: |
-        curl -LO# https://github.com/KreitinnSoftware/MiceWine-RootFS-Generator/releases/download/$(curl -s https://api.github.com/repos/KreitinnSoftware/MiceWine-RootFS-Generator/releases | grep tag_name -m 1 | cut -d ":" -f 2 | sed "s/\"//g" | sed "s/,//g" | sed "s/ //g")/MiceWine-Packages.zip || true
-        sudo unzip -o MiceWine-Packages.zip -d /mnt/arch/MiceWine-RootFS-Generator/built-pkgs || true
+        curl -LO# https://github.com/KreitinnSoftware/MiceWine-Packages/releases/download/$(curl -s https://api.github.com/repos/KreitinnSoftware/MiceWine-Packages/releases | grep tag_name -m 1 | cut -d ":" -f 2 | sed "s/\"//g" | sed "s/,//g" | sed "s/ //g")/MiceWine-Packages.zip || true
+        sudo unzip -o MiceWine-Packages.zip -d /mnt/arch/MiceWine-Packages/built-pkgs || true
         rm -f MiceWine-Packages.zip
 
     - name: "Setup Basic Android (x86_64) Runtime Environment (Required for Building x86_64 glib)"
@@ -50,38 +50,50 @@ jobs:
 
     - name: "Start Building (x86_64)"
       run: |
-        sudo arch-chroot /mnt/arch bash -c "cd /MiceWine-RootFS-Generator && ./build-all.sh x86_64 --ci && cd logs && 7z a /MiceWine-RootFS-$(git rev-parse --short HEAD)-x86_64-Logs.zip"
+        sudo arch-chroot /mnt/arch bash -c "cd /MiceWine-Packages && ./build-all.sh x86_64 --ci && cd logs && 7z a /MiceWine-Packages-$(git rev-parse --short HEAD)-x86_64-Logs.zip"
 
-    - name: "Create RootFS File (x86_64)"
+    - name: "Create Core Package File (x86_64)"
       run: |
-        sudo arch-chroot /mnt/arch bash -c "cd /MiceWine-RootFS-Generator && ./create-rootfs-rat.sh x86_64 && mv MiceWine-RootFS-\($(git rev-parse --short HEAD)\)-x86_64.rat /MiceWine-RootFS-$(git rev-parse --short HEAD)-x86_64.rat"
+        sudo arch-chroot /mnt/arch bash -c "cd /MiceWine-Packages && ./create-core-rat.sh x86_64 && mv MiceWine-Core-\($(git rev-parse --short HEAD)\)-x86_64.rat /MiceWine-Core-$(git rev-parse --short HEAD)-x86_64.rat"
 
     - name: "Clean (x86_64) RootFS"
       run: |
-        sudo rm -rf /mnt/arch/data /mnt/arch/MiceWine-RootFS-Generator/workdir /mnt/arch/MiceWine-RootFS-Generator/rootfs
+        sudo rm -rf /mnt/arch/data /mnt/arch/MiceWine-Packages/workdir
 
     - name: "Start Building (aarch64)"
       run: |
-        sudo arch-chroot /mnt/arch bash -c "cd /MiceWine-RootFS-Generator && ./build-all.sh aarch64 --ci && cd logs && 7z a /MiceWine-RootFS-$(git rev-parse --short HEAD)-aarch64-Logs.zip"
+        sudo arch-chroot /mnt/arch bash -c "cd /MiceWine-Packages && ./build-all.sh aarch64 --ci && cd logs && 7z a /MiceWine-Packages-$(git rev-parse --short HEAD)-aarch64-Logs.zip"
 
-    - name: "Create RootFS File (aarch64)"
+    - name: "Create Core Package File (aarch64)"
       run: |
-        sudo arch-chroot /mnt/arch bash -c "cd /MiceWine-RootFS-Generator && ./create-rootfs-rat.sh aarch64 && mv MiceWine-RootFS-\($(git rev-parse --short HEAD)\)-aarch64.rat /MiceWine-RootFS-$(git rev-parse --short HEAD)-aarch64.rat"
+        sudo arch-chroot /mnt/arch bash -c "cd /MiceWine-Packages && ./create-core-rat.sh aarch64 && mv MiceWine-Core-\($(git rev-parse --short HEAD)\)-aarch64.rat /MiceWine-Core-$(git rev-parse --short HEAD)-aarch64.rat"
 
     - name: "Save Rat Packages"
       run: |
-        sudo arch-chroot /mnt/arch bash -c "cd /MiceWine-RootFS-Generator/built-pkgs && 7z a /MiceWine-Packages.zip"
+        sudo arch-chroot /mnt/arch bash -c "cd /MiceWine-Packages/built-pkgs && 7z a /MiceWine-Packages.zip"
+
+    - name: "Download External Packages"
+      run: |
+        sudo arch-chroot /mnt/arch base -c "cd /MiceWine-Packages && ./tools/download-external-dependencies.sh"
+
+    - name: "Create Repository Index"
+      run: |
+        sudo arch-chroot /mnt/arch base -c "cd /MiceWine-Packages && ./tools/create-repository-index.sh"
 
     - name: "Get Short SHA"
       run: |
         echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
     - name: "Create Release"
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
-        name: "MiceWine RootFS (${{ env.SHORT_SHA }})"
-        tag_name: ${{ env.SHORT_SHA }}
-        prerelease: true
+        name: "MiceWine Packages"
+        tag_name: default
+        prerelease: false
         files: |
-          /mnt/arch/*.rat
-          /mnt/arch/*.zip
+          /mnt/arch/MiceWine-Packages/index.json
+          /mnt/arch/MiceWine-Packages/*.rat
+          /mnt/arch/MiceWine-Packages/MiceWine-Packages.zip
+          /mnt/arch/MiceWine-Packages/components/DXVK/*.rat
+          /mnt/arch/MiceWine-Packages/components/WineD3D/*.rat
+          /mnt/arch/MiceWine-Packages/components/VKD3D/*.rat

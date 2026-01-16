@@ -72,6 +72,10 @@ jobs:
       run: |
         sudo arch-chroot /mnt/arch bash -c "cd /MiceWine-Packages/built-pkgs && 7z a /MiceWine-Packages.zip"
 
+    - name: "Move Components Packages to Components Folder"
+      run: |
+        sudo arch-chroot /mnt/arch bash -c "cd /MiceWine-Packages && ./move-components-rat.sh"
+
     - name: "Download External Packages"
       run: |
         sudo arch-chroot /mnt/arch bash -c "cd /MiceWine-Packages && ./tools/download-external-dependencies.sh"

@@ -74,11 +74,11 @@ jobs:
 
     - name: "Download External Packages"
       run: |
-        sudo arch-chroot /mnt/arch base -c "cd /MiceWine-Packages && ./tools/download-external-dependencies.sh"
+        sudo arch-chroot /mnt/arch bash -c "cd /MiceWine-Packages && ./tools/download-external-dependencies.sh"
 
     - name: "Create Repository Index"
       run: |
-        sudo arch-chroot /mnt/arch base -c "cd /MiceWine-Packages && ./tools/create-repository-index.sh"
+        sudo arch-chroot /mnt/arch bash -c "cd /MiceWine-Packages && ./tools/create-repository-index.sh"
 
     - name: "Get Short SHA"
       run: |

@@ -54,7 +54,7 @@ jobs:
 
     - name: "Create Core Package File (x86_64)"
       run: |
-        sudo arch-chroot /mnt/arch bash -c "cd /MiceWine-Packages && ./create-core-rat.sh x86_64 && mv MiceWine-Core-\($(git rev-parse --short HEAD)\)-x86_64.rat /MiceWine-Core-$(git rev-parse --short HEAD)-x86_64.rat"
+        sudo arch-chroot /mnt/arch bash -c "cd /MiceWine-Packages && ./create-core-rat.sh x86_64"
 
     - name: "Clean (x86_64) RootFS"
       run: |
@@ -66,7 +66,7 @@ jobs:
 
     - name: "Create Core Package File (aarch64)"
       run: |
-        sudo arch-chroot /mnt/arch bash -c "cd /MiceWine-Packages && ./create-core-rat.sh aarch64 && mv MiceWine-Core-\($(git rev-parse --short HEAD)\)-aarch64.rat /MiceWine-Core-$(git rev-parse --short HEAD)-aarch64.rat"
+        sudo arch-chroot /mnt/arch bash -c "cd /MiceWine-Packages && ./create-core-rat.sh aarch64"
 
     - name: "Save Rat Packages"
       run: |
@@ -96,8 +96,8 @@ jobs:
         prerelease: false
         files: |
           /mnt/arch/MiceWine-Packages/index.json
-          /mnt/arch/*.rat
           /mnt/arch/*.zip
+          /mnt/arch/MiceWine-Packages/components/*.rat
           /mnt/arch/MiceWine-Packages/components/DXVK/*.rat
           /mnt/arch/MiceWine-Packages/components/WineD3D/*.rat
           /mnt/arch/MiceWine-Packages/components/VKD3D/*.rat

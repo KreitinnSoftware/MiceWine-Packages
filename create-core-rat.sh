@@ -42,6 +42,9 @@ mkdir -p /tmp/$RAND_VAL
 
 cd /tmp/$RAND_VAL
 
+mkdir -p "files/wine-utils"
+cp -rf "$INIT_DIR/common/"* "files/wine-utils"
+
 touch new_makeSymlinks.sh
 
 for i in $ALL_PKGS; do

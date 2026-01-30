@@ -398,7 +398,7 @@ installBuiltPackage()
 		tar -xf "$package" -C "$APP_ROOT_DIR"
 
 		touch $APP_ROOT_DIR/makeSymlinks.sh
-		bash $APP_ROOT_DIR/makeSymlinks.sh
+		bash $APP_ROOT_DIR/makeSymlinks.sh $APP_ROOT_DIR
 		rm -f $APP_ROOT_DIR/makeSymlinks.sh
 
 		touch $APP_ROOT_DIR/packages/$(basename $package .rat)
